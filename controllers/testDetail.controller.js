@@ -107,6 +107,7 @@ exports.deleteTestDetail = asyncHandler(async (req, res, next) => {
 
   res.status(204).json({
     status: "success",
+    message: "Test detail deleted successfully",
     data: null,
   });
 });

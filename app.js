@@ -4,6 +4,8 @@ const ApiError = require("./utils/apiError");
 const globalError = require("./middlewares/errorMiddleware");
 
 // Route files
+const authRoutes = require("./routes/auth.routes");
+
 const categoryRoutes = require("./routes/categoryroutes");
 const testRoutes = require("./routes/test.routes");
 const testDetailRoutes = require("./routes/testDetail.routes");
@@ -14,12 +16,13 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
 // 🔹 Routes (هنضيفهم بعدين)
+app.use("/api/v1/auth", authRoutes);
+
 app.use("/api/v1/categories", categoryRoutes);
 app.use("/api/v1/tests", testRoutes);
 app.use("/api/v1/test-details", testDetailRoutes);

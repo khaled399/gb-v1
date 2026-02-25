@@ -18,9 +18,9 @@ const answerSchema = new mongoose.Schema({
 
 const testResultSchema = new mongoose.Schema(
   {
-    user: {
+    kid_ref: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Kid",
       required: true,
     },
     test: {
