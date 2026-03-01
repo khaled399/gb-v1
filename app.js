@@ -11,6 +11,8 @@ const testRoutes = require("./routes/test.routes");
 const testDetailRoutes = require("./routes/testDetail.routes");
 const userRoutes = require("./routes/User.routes");
 const testResultRoutes = require("./routes/testResult.routes");
+const kidRoutes = require("./routes/kid.routes");
+const resultsRoutes = require("./routes/results.routes");
 
 const app = express();
 
@@ -22,12 +24,13 @@ if (process.env.NODE_ENV === "development") {
 
 // 🔹 Routes (هنضيفهم بعدين)
 app.use("/api/v1/auth", authRoutes);
-
 app.use("/api/v1/categories", categoryRoutes);
 app.use("/api/v1/tests", testRoutes);
 app.use("/api/v1/test-details", testDetailRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/test-results", testResultRoutes);
+app.use("/api/v1/kids", kidRoutes);
+app.use("/api/v1/results", resultsRoutes);
 
 //  Handle undefined routes
 app.all("*", (req, res, next) => {

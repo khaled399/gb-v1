@@ -7,8 +7,8 @@ const answerSchema = new mongoose.Schema({
     required: true,
   },
   selectedAnswer: {
-    type: String,
-    required: true, // answer1, answer2...
+    type: mongoose.Schema.Types.ObjectId, // 👈 بدل String
+    required: true,
   },
   score: {
     type: Number,
@@ -32,6 +32,19 @@ const testResultSchema = new mongoose.Schema(
     totalScore: {
       type: Number,
       default: 0,
+    },
+
+    maxScore: {
+      type: Number,
+      default: 0,
+    },
+    percentage: {
+      type: Number,
+    },
+
+    level: {
+      type: String,
+      enum: ["Low", "Medium", "High"],
     },
   },
   { timestamps: true },
