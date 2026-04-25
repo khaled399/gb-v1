@@ -14,6 +14,7 @@ const testResultRoutes = require("./routes/testResult.routes");
 const kidRoutes = require("./routes/kid.routes");
 const resultsRoutes = require("./routes/results.routes");
 const chatbotRoutes = require("./routes/chatbot.routes");
+const adminRoutes = require("./routes/admin.routes");
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use("/api/v1/test-results", testResultRoutes);
 app.use("/api/v1/kids", kidRoutes);
 app.use("/api/v1/results", resultsRoutes);
 app.use("/api/v1/chat", chatbotRoutes);
+app.use("/api/v1/admin", adminRoutes);
 
 //  Handle undefined routes
 app.all("*", (req, res, next) => {
