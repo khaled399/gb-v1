@@ -96,25 +96,67 @@ exports.sendMessage = async (req, res, next) => {
     // 6️⃣ Save user message and bot response to DB
     const botReply = response.data;
     chat.messages.push({ role: "user", text: message });
-    // const botText =
-    //   botReply?.guidance?.solutions?.join(" ") ||
-    //   botReply?.reassurance ||
-    //   "No response";
+
+    // Log the bot reply for debugging
+    // console.log("Bot reply:", JSON.stringify(botReply, null, 2));
+
+    // Extract bot text based on response type
     let botText = "No response";
 
-    if (botReply?.solutions?.length) {
-      botText = botReply.solutions.join("\n");
-    } else if (botReply?.guidance?.solutions?.length) {
-      botText = botReply.guidance.solutions.join("\n");
-    } else if (botReply?.reassurance) {
-      botText = botReply.reassurance;
-    } else if (botReply?.reason) {
-      botText = botReply.reason;
+    // Try to extract text from different response formats
+    if (botReply?.type === "error") {
+      // Error response from Python service
+      botText = `Error: ${botReply?.message || "Unknown error"}`;
+      console.error("Chatbot error:", botText);
+    } else if (botReply?.type === "text") {
+      // Plain text fallback response
+      botText = botReply?.message || "No response";
+    } else if (botReply?.type === "mixed") {
+      // Mixed response: reassurance + guidance
+      let parts = [];
+      if (botReply?.reassurance) {
+        parts.push(botReply.reassurance);
+      }
+      if (botReply?.guidance?.solutions?.length) {
+        parts.push(botReply.guidance.solutions.join("\n"));
+      }
+      botText = parts.filter((p) => p).join("\n\n");
+    } else if (botReply?.type === "reassurance") {
+      // Reassurance only
+      botText = botReply?.message || botReply?.reassurance || "No response";
+    } else if (botReply?.type === "guidance") {
+      // Guidance only
+      let parts = [];
+      if (botReply?.reason) {
+        parts.push(botReply.reason);
+      }
+      if (botReply?.solutions?.length) {
+        parts.push(botReply.solutions.join("\n"));
+      }
+      botText = parts.filter((p) => p).join("\n\n");
+    } else if (botReply?.type === "info") {
+      // Information response
+      botText = botReply?.explanation || "No response";
+    } else {
+      // Fallback to checking individual fields
+      if (botReply?.solutions?.length) {
+        botText = botReply.solutions.join("\n");
+      } else if (botReply?.guidance?.solutions?.length) {
+        botText = botReply.guidance.solutions.join("\n");
+      } else if (botReply?.reassurance) {
+        botText = botReply.reassurance;
+      } else if (botReply?.message) {
+        botText = botReply.message;
+      } else if (botReply?.reason) {
+        botText = botReply.reason;
+      } else if (botReply?.explanation) {
+        botText = botReply.explanation;
+      }
     }
 
     chat.messages.push({
       role: "bot",
-      text: botText,
+      text: botText || "No response",
     });
     await chat.save();
 

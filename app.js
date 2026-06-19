@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// 🔹 Routes (هنضيفهم بعدين)
+//  Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/categories", categoryRoutes);
 app.use("/api/v1/tests", testRoutes);

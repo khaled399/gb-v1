@@ -4,7 +4,7 @@ const ApiError = require("../utils/apiError");
 
 // @desc    Create Test Detail (Question)
 // @route   POST /api/test-details
-// @access  Public
+// @access  (Admin)
 exports.createTestDetail = asyncHandler(async (req, res, next) => {
   const testDetail = await TestDetail.create(req.body);
 
@@ -77,7 +77,7 @@ exports.getTestDetailsByTestId = asyncHandler(async (req, res, next) => {
 
 // @desc    Update Test Detail
 // @route   PUT /api/test-details/:id
-// @access  Public
+// @access  (Admin)
 exports.updateTestDetail = asyncHandler(async (req, res, next) => {
   const testDetail = await TestDetail.findByIdAndUpdate(
     req.params.id,
@@ -97,7 +97,7 @@ exports.updateTestDetail = asyncHandler(async (req, res, next) => {
 
 // @desc    Delete Test Detail
 // @route   DELETE /api/test-details/:id
-// @access  Public
+// @access  (Admin)
 exports.deleteTestDetail = asyncHandler(async (req, res, next) => {
   const testDetail = await TestDetail.findByIdAndDelete(req.params.id);
 

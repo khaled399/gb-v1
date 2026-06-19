@@ -3,6 +3,7 @@ from app.models.schemas import ChatRequest
 from app.utils.prompt_builder import build_prompt
 from app.services.openrouter_service import openrouter_service
 import json
+import traceback
 
 router = APIRouter(prefix="/api/v1", tags=["Chat"])
 
@@ -17,13 +18,23 @@ async def chat_endpoint(request: ChatRequest):
     )
 
     # 2. Call AI
-    reply_content = await openrouter_service.chat(messages=messages_payload)
+    try:
+        reply_content = await openrouter_service.chat(messages=messages_payload)
+    except Exception as e:
+        print(f"Error calling OpenRouter: {str(e)}")
+        traceback.print_exc()
+        return {
+            "type": "error",
+            "message": str(e)
+        }
 
     # 3. حاول نحوله JSON
     try:
         parsed = json.loads(reply_content)
         return parsed
-    except:
+    except json.JSONDecodeError as e:
+        print(f"JSON parse error: {str(e)}")
+        print(f"Reply content: {reply_content}")
         # fallback لو AI بعت string مش JSON
         return {
             "type": "text",
