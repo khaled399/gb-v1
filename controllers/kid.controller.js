@@ -87,5 +87,8 @@ exports.deleteKid = asyncHandler(async (req, res, next) => {
     return next(new ApiError("Kid not found or not authorized", 403));
   }
 
-  res.status(204).send();
+  res.status(200).json({
+    status: "success",
+    message: "Kid deleted successfully",
+  });
 });
